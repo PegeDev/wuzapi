@@ -4,15 +4,15 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "7926:7926"
     environment:
       - WUZAPI_ADMIN_TOKEN=H4Zbhw72PBKdTIgS
-      - DB_USER=wuzapi
-      - DB_PASSWORD=wuzapi
-      - DB_NAME=wuzapi
-      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PASSWORD=evpR2Xkm6B4nkrmYQBStQ61MTtZvbe4vulWJQYflJwnPBCzoPiID66tsryBDrXuZ
+      - DB_NAME=postgres
+      - DB_HOST=lc4co8wo8kow8swock0skk4c
       - DB_PORT=5432
-      - TZ=America/Sao_Paulo
+      - TZ=Asia/Jakarta
       - WEBHOOK_FORMAT=json
       - SESSION_DEVICE_NAME=WuzAPI
     depends_on:
@@ -23,11 +23,11 @@ services:
     restart: on-failure
 
   db:
-    image: postgres:16
+    image: postgres:17
     environment:
-      POSTGRES_USER: wuzapi
-      POSTGRES_PASSWORD: wuzapi
-      POSTGRES_DB: wuzapi
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: evpR2Xkm6B4nkrmYQBStQ61MTtZvbe4vulWJQYflJwnPBCzoPiID66tsryBDrXuZ
+      POSTGRES_DB: postgres
     ports:
       - "5432:5432"
     volumes:
