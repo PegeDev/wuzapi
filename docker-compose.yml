@@ -21,26 +21,7 @@ services:
     networks:
       - wuzapi-network
     restart: on-failure
-
-  db:
-    image: postgres:17
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: evpR2Xkm6B4nkrmYQBStQ61MTtZvbe4vulWJQYflJwnPBCzoPiID66tsryBDrXuZ
-      POSTGRES_DB: postgres
-    ports:
-      - "6454:6454"
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    networks:
-      - wuzapi-network
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U wuzapi"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    restart: always
-      
+    
 networks:
   wuzapi-network:
     driver: bridge
