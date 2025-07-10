@@ -39,12 +39,13 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     tzdata \
     && rm -rf /var/lib/apt/lists/*
 
-ENV TZ="America/Sao_Paulo"
+ENV TZ="Asia/Jakarta"
 WORKDIR /app
 
 COPY --from=builder /app/wuzapi         /app/
 COPY --from=builder /app/static         /app/static/
 COPY --from=builder /app/wuzapi.service /app/wuzapi.service
+COPY --from=builder /app/.env /app/.env
 
 RUN chmod +x /app/wuzapi && \
     chmod -R 755 /app && \
