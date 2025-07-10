@@ -39,7 +39,6 @@ COPY --from=builder /app/wuzapi.service /app/wuzapi.service
 
 RUN chmod +x /app/wuzapi && \
     chmod -R 755 /app && \
-    chown -R root:root /app && \
-    chmod 640 /app/.env
+    chown -R root:root /app 
 
 ENTRYPOINT ["/app/wuzapi", "--logtype=console", "--color=true"]
