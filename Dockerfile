@@ -35,7 +35,7 @@ WORKDIR /app
 COPY --from=builder /app/wuzapi /app/
 COPY --from=builder /app/static /app/static/
 COPY --from=builder /app/wuzapi.service /app/wuzapi.service
-COPY .env /app/.env
+
 
 RUN chmod +x /app/wuzapi && \
     chmod -R 755 /app && \
