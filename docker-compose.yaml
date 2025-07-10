@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  wuzapi:
+    image: pegedev/wuzapi:latest
+    container_name: wuzapi
+    restart: unless-stopped
+    ports:
+      - "3000:3000"  # Default WuzAPI port
+    environment:
+      - WUZAPI_ADMIN_TOKEN=${ADMIN_TOKEN:-ChangeMeToSecureToken}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=${DB_USER:-wuzapi_user}
+      - DB_PASSWORD=${DB_PASSWORD:-ChangeMeToStrongPassword}
+      - DB_NAME=${DB_NAME:-wuzapi_db}
+      - TZ=${TZ:-Asia/Jakarta}
+      - WEBHOOK_URL=${WEBHOOK_URL:-}
+      - WEBHOOK_FORMAT=${WEBHOOK_FORMAT:-json}
+      - SESSION_DEVICE_NAME=${SESSION_DEVICE_NAME:-Coolify-WuzAPI}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - wuzapi-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  db:
+    image: postgres:15-alpine
+    container_name: wuzapi_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER:-wuzapi_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-ChangeMeToStrongPassword}
+      POSTGRES_DB: ${DB_NAME:-wuzapi_db}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - wuzapi-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-wuzapi_user}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 256M
+
+networks:
+  wuzapi-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
