@@ -6,15 +6,15 @@ services:
     ports:
       - "7926:7926"
     environment:
-      - WUZAPI_ADMIN_TOKEN=H4Zbhw72PBKdTIgS
-      - DB_USER=postgres
-      - DB_PASSWORD=evpR2Xkm6B4nkrmYQBStQ61MTtZvbe4vulWJQYflJwnPBCzoPiID66tsryBDrXuZ
-      - DB_NAME=postgres
-      - DB_HOST=localhost
-      - DB_PORT=6454
-      - TZ=Asia/Jakarta
-      - WEBHOOK_FORMAT=json
-      - SESSION_DEVICE_NAME=WuzAPI
+      - WUZAPI_ADMIN_TOKEN=${WUZAPI_ADMIN_TOKEN}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_HOST=db
+      - DB_PORT=5432
+      - TZ=${TZ:-Asia/Jakarta}
+      - WEBHOOK_FORMAT=${WEBHOOK_FORMAT:-json}
+      - SESSION_DEVICE_NAME=${SESSION_DEVICE_NAME:-WuzAPI}
     depends_on:
       db:
         condition: service_healthy
