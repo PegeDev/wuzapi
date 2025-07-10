@@ -11,8 +11,8 @@ services:
       - DB_PASSWORD=wuzapi
       - DB_NAME=wuzapi
       - DB_HOST=db
-      - DB_PORT=7987
-      - TZ=Asia/Jakarta
+      - DB_PORT=5432
+      - TZ=America/Sao_Paulo
       - WEBHOOK_FORMAT=json
       - SESSION_DEVICE_NAME=WuzAPI
     depends_on:
@@ -29,7 +29,7 @@ services:
       POSTGRES_PASSWORD: wuzapi
       POSTGRES_DB: wuzapi
     ports:
-      - "7987:7987"
+      - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
     networks:
