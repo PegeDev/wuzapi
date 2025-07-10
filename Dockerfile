@@ -39,15 +39,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     tzdata \
     && rm -rf /var/lib/apt/lists/*
 
-ENV TZ="America/Sao_Paulo"
+ENV TZ="Asia/Jakarta"  # Diubah sesuai kebutuhan
 WORKDIR /app
 
 COPY --from=builder /app/wuzapi         /app/
 COPY --from=builder /app/static         /app/static/
 COPY --from=builder /app/wuzapi.service /app/wuzapi.service
+COPY .env                                /app/.env  # Menambahkan copy .env
 
 RUN chmod +x /app/wuzapi && \
     chmod -R 755 /app && \
-    chown -R root:root /app
+    chown -R root:root /app && \
+    chmod 640 /app/.env  # Set permission untuk .env
 
 ENTRYPOINT ["/app/wuzapi", "--logtype=console", "--color=true"]
