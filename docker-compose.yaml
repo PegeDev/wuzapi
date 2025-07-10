@@ -3,29 +3,30 @@ version: '3.8'
 services:
   wuzapi:
     build:
-      context: https://github.com/asternic/wuzapi.git#main
+      context: https://github.com/PegeDev/wuzapi.git#main
       dockerfile: Dockerfile
     container_name: wuzapi
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "8080:8080"  # Menggunakan port 8080 sesuai log
     environment:
-      # Konfigurasi utama
-      - WUZAPI_ADMIN_TOKEN=${ADMIN_TOKEN:-GantiDenganTokenAman}
+      # Konfigurasi Database
       - DB_HOST=db
       - DB_PORT=5432
       - DB_USER=${DB_USER:-wuzapi_user}
       - DB_PASSWORD=${DB_PASSWORD:-GantiDenganPasswordDB}
       - DB_NAME=${DB_NAME:-wuzapi_db}
       
-      # Konfigurasi tambahan
-      - TZ=${TZ:-Asia/Jakarta}
+      # Konfigurasi Aplikasi
+      - PORT=8080
+      - WUZAPI_ADMIN_TOKEN=${ADMIN_TOKEN:-GantiDenganTokenAman}
+      - TZ=Asia/Jakarta
       - WEBHOOK_URL=${WEBHOOK_URL}
-      - WEBHOOK_FORMAT=${WEBHOOK_FORMAT:-json}
-      - SESSION_DEVICE_NAME=${SESSION_DEVICE_NAME:-WuzAPI-Coolify}
+      - WEBHOOK_FORMAT=json
+      - SESSION_DEVICE_NAME=WuzAPI-Coolify
+      - DISABLE_RABBITMQ=true  # Nonaktifkan RabbitMQ
       
-    volumes:
-      - ./dummy.env:/.env:ro  # File dummy untuk menghilangkan warning
+    command: sh -c "touch /.env && npm start"  # Solusi file .env
       
     depends_on:
       db:
@@ -33,7 +34,7 @@ services:
     networks:
       - wuzapi-network
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
       interval: 30s
       timeout: 10s
       retries: 3
