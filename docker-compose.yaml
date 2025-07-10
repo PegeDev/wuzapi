@@ -2,11 +2,13 @@ version: '3.8'
 
 services:
   wuzapi:
-    image: pegedev/wuzapi:latest
+    build:
+      context: https://github.com/PegeDev/wuzapi.git#main
+      dockerfile: Dockerfile
     container_name: wuzapi
     restart: unless-stopped
     ports:
-      - "3000:3000"  # Default WuzAPI port
+      - "3000:3000"
     environment:
       - WUZAPI_ADMIN_TOKEN=${ADMIN_TOKEN:-ChangeMeToSecureToken}
       - DB_HOST=db
