@@ -5,13 +5,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install build dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
-    pkg-config \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    pkg-config
 
 WORKDIR /app
 COPY go.mod go.sum ./
@@ -23,31 +20,26 @@ RUN go build -o wuzapi
 
 FROM debian:bullseye-slim
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install runtime dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y \
     ca-certificates \
     netcat-openbsd \
     postgresql-client \
     openssl \
     curl \
     ffmpeg \
-    tzdata \
-    && rm -rf /var/lib/apt/lists/*
+    tzdata
 
-ENV TZ="America/Sao_Paulo"
+ENV TZ="Asia/Jakarta"
 WORKDIR /app
 
-COPY --from=builder /app/wuzapi         /app/
-COPY --from=builder /app/static         /app/static/
+COPY --from=builder /app/wuzapi /app/
+COPY --from=builder /app/static /app/static/
 COPY --from=builder /app/wuzapi.service /app/wuzapi.service
+COPY .env /app/.env
 
 RUN chmod +x /app/wuzapi && \
     chmod -R 755 /app && \
-    chown -R root:root /app
+    chown -R root:root /app && \
+    chmod 640 /app/.env
 
 ENTRYPOINT ["/app/wuzapi", "--logtype=console", "--color=true"]
