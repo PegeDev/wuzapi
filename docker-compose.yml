@@ -10,8 +10,8 @@ services:
       - DB_USER=postgres
       - DB_PASSWORD=evpR2Xkm6B4nkrmYQBStQ61MTtZvbe4vulWJQYflJwnPBCzoPiID66tsryBDrXuZ
       - DB_NAME=postgres
-      - DB_HOST=lc4co8wo8kow8swock0skk4c
-      - DB_PORT=5432
+      - DB_HOST=localhost
+      - DB_PORT=6454
       - TZ=Asia/Jakarta
       - WEBHOOK_FORMAT=json
       - SESSION_DEVICE_NAME=WuzAPI
